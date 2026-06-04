@@ -1,0 +1,608 @@
+{
+  "factions": [
+    {
+      "id": "F1",
+      "name": "Vanguard Coalition",
+      "allies": [
+        "Solar Accord",
+        "Iron Covenant"
+      ],
+      "enemies": [
+        "Ashen Legion",
+        "Void Collective",
+        "Verdant Swarm"
+      ],
+      "fact": "The Vanguard Coalition is the dominant human military force, allied with the Solar Accord and the Iron Covenant, and at war with the Ashen Legion."
+    },
+    {
+      "id": "F2",
+      "name": "Ashen Legion",
+      "allies": [
+        "Void Collective",
+        "Eclipse Syndicate"
+      ],
+      "enemies": [
+        "Vanguard Coalition",
+        "Solar Accord",
+        "Verdant Swarm"
+      ],
+      "fact": "The Ashen Legion is allied with the Void Collective and secretly supplied by the Eclipse Syndicate. They are at war with the Vanguard Coalition."
+    },
+    {
+      "id": "F3",
+      "name": "Solar Accord",
+      "allies": [
+        "Vanguard Coalition",
+        "Celestial Order"
+      ],
+      "enemies": [
+        "Void Collective",
+        "Ashen Legion",
+        "Verdant Swarm"
+      ],
+      "fact": "The Solar Accord supports the Celestial Order and distrusts the Void Collective. They are allied with the Vanguard Coalition."
+    },
+    {
+      "id": "F4",
+      "name": "Iron Covenant",
+      "allies": [
+        "Vanguard Coalition"
+      ],
+      "enemies": [
+        "Verdant Swarm"
+      ],
+      "fact": "The Iron Covenant is neutral toward all factions except the Vanguard Coalition, with whom they have a trade agreement established at the Treaty of Bastion."
+    },
+    {
+      "id": "F5",
+      "name": "Void Collective",
+      "allies": [
+        "Ashen Legion"
+      ],
+      "enemies": [
+        "Vanguard Coalition",
+        "Solar Accord",
+        "Verdant Swarm"
+      ],
+      "fact": "The Void Collective seeks control of paracausal artifacts and caused the Void Breach near the Black Meridian."
+    },
+    {
+      "id": "F6",
+      "name": "Verdant Swarm",
+      "allies": [],
+      "enemies": [
+        "Vanguard Coalition",
+        "Ashen Legion",
+        "Solar Accord",
+        "Iron Covenant",
+        "Void Collective",
+        "Eclipse Syndicate",
+        "Celestial Order"
+      ],
+      "fact": "The Verdant Swarm is hostile to every human faction and is controlled in part by the Heartseed, which Thorn Alpha possesses."
+    },
+    {
+      "id": "F7",
+      "name": "Eclipse Syndicate",
+      "allies": [
+        "Ashen Legion"
+      ],
+      "enemies": [
+        "Verdant Swarm"
+      ],
+      "fact": "The Eclipse Syndicate secretly supplies the Ashen Legion and operates in the shadows. Shade-7 is their most known operative."
+    },
+    {
+      "id": "F8",
+      "name": "Celestial Order",
+      "allies": [
+        "Solar Accord"
+      ],
+      "enemies": [
+        "Verdant Swarm"
+      ],
+      "fact": "The Celestial Order studies paracausal phenomena and helped contain the Void Breach. Sage Elandra is their most prominent member."
+    }
+  ],
+  "locations": [
+    {
+      "id": "L1",
+      "name": "Helios Prime",
+      "controlled_by": "Vanguard Coalition",
+      "exists": true,
+      "fact": "Helios Prime is the seat of the Vanguard Coalition, defended by Lyra Voss during the Battle of Helios Prime, which ended in a Vanguard victory."
+    },
+    {
+      "id": "L2",
+      "name": "Obsidian Reef",
+      "controlled_by": "Ashen Legion",
+      "exists": true,
+      "fact": "The Obsidian Reef is controlled by the Ashen Legion and contains the Nightforge. Warlord Kharos commands from here."
+    },
+    {
+      "id": "L3",
+      "name": "New Dawn Station",
+      "controlled_by": "Vanguard Coalition",
+      "exists": true,
+      "fact": "New Dawn Station orbits Helios Prime and serves as a diplomatic hub. Commander Orion's ship the Dawnbreaker is docked here."
+    },
+    {
+      "id": "L4",
+      "name": "Crystal Wastes",
+      "controlled_by": null,
+      "exists": true,
+      "fact": "The Crystal Wastes contain large deposits of Radiant Shards that power Vanguard technology. They border the Verdant Depths."
+    },
+    {
+      "id": "L5",
+      "name": "Verdant Depths",
+      "controlled_by": "Verdant Swarm",
+      "exists": true,
+      "fact": "The Verdant Depths are home to the Verdant Swarm and border the Crystal Wastes. Thorn Alpha commands from here."
+    },
+    {
+      "id": "L6",
+      "name": "Black Meridian",
+      "controlled_by": null,
+      "exists": true,
+      "fact": "The Black Meridian is hidden inside a nebula. The Void Key opens gateways to it. The Void Breach occurred near here and it remains unstable."
+    },
+    {
+      "id": "L7",
+      "name": "Iron Bastion",
+      "controlled_by": "Iron Covenant",
+      "exists": true,
+      "fact": "The Iron Bastion is the headquarters of the Iron Covenant and the site where the Treaty of Bastion was signed."
+    },
+    {
+      "id": "L8",
+      "name": "Sunken Vault",
+      "controlled_by": null,
+      "exists": true,
+      "fact": "The Sunken Vault contains ancient technology and is the hiding place of the Astral Crown, which Archon Veyl seeks."
+    },
+    {
+      "id": "L9",
+      "name": "Aether Spire",
+      "controlled_by": "Celestial Order",
+      "exists": true,
+      "fact": "The Aether Spire is maintained by the Celestial Order. Sage Elandra's ship the Silver Halo is stationed here."
+    },
+    {
+      "id": "L10",
+      "name": "Ember Reach",
+      "controlled_by": null,
+      "exists": false,
+      "fact": "Ember Reach was destroyed during the Red Eclipse when the Ashen Legion attacked. It no longer exists. The Ember Sigil was forged here before its destruction."
+    },
+    {
+      "id": "L11",
+      "name": "Hollow Moon",
+      "controlled_by": null,
+      "exists": true,
+      "fact": "The Hollow Moon contains abandoned laboratories where Sage Elandra led the expedition that recovered the Echo Prism."
+    },
+    {
+      "id": "L12",
+      "name": "Silent Frontier",
+      "controlled_by": null,
+      "exists": true,
+      "fact": "The Silent Frontier lies beyond charted space. No survivors reached Resonance Point. Ren Ashford deserted before the final approach and is the only member to return alive."
+    },
+    {
+      "id": "L13",
+      "name": "Veil Station",
+      "controlled_by": "Eclipse Syndicate",
+      "exists": true,
+      "fact": "Veil Station is a hidden Eclipse Syndicate outpost near the border of charted space. Shade-7 uses it as a base of operations."
+    },
+    {
+      "id": "L14",
+      "name": "The Ashen Gate",
+      "controlled_by": "Ashen Legion",
+      "exists": true,
+      "fact": "The Ashen Gate is a fortified checkpoint controlled by the Ashen Legion on the route to the Silent Frontier. All ships passing through are logged."
+    },
+    {
+      "id": "L15",
+      "name": "Resonance Point",
+      "controlled_by": null,
+      "exists": true,
+      "fact": "Resonance Point is an anomalous region near the Silent Frontier where paracausal energy readings spiked just before the expedition disappeared."
+    }
+  ],
+  "characters": [
+    {
+      "id": "C1",
+      "name": "Commander Orion",
+      "alive": true,
+      "faction": "Vanguard Coalition",
+      "fact": "Commander Orion leads the Vanguard Coalition and mentored Lyra Voss. Marshal Drax once saved his life. He survived the Red Eclipse.",
+      "personality": "formal, burdened by command, deeply loyal",
+      "speaking_style": "measured, authoritative, rarely uses contractions, references duty and sacrifice"
+    },
+    {
+      "id": "C2",
+      "name": "Lyra Voss",
+      "alive": true,
+      "faction": "Vanguard Coalition",
+      "fact": "Lyra Voss serves the Vanguard Coalition and defended Helios Prime. Her sister Captain Mira died during the Red Eclipse. She was mentored by Commander Orion.",
+      "personality": "driven, grieving, fiercely loyal, haunted by Mira's death",
+      "speaking_style": "direct, clipped, deflects personal questions, becomes cold when Mira is mentioned"
+    },
+    {
+      "id": "C3",
+      "name": "Warlord Kharos",
+      "alive": true,
+      "faction": "Ashen Legion",
+      "fact": "Warlord Kharos commands the Ashen Legion from the Obsidian Reef. He is the personal enemy of Commander Orion and commanded Ashen forces at Helios Prime.",
+      "personality": "ruthless, strategic, contemptuous of weakness",
+      "speaking_style": "cold, declarative, never explains himself, speaks in short sentences"
+    },
+    {
+      "id": "C4",
+      "name": "Sage Elandra",
+      "alive": true,
+      "faction": "Celestial Order",
+      "fact": "Sage Elandra studies paracausal artifacts and recovered the Echo Prism from the Hollow Moon. She helped contain the Void Breach and possesses the Echo Prism.",
+      "personality": "scholarly, cautious, fascinated by the unknown, meticulous",
+      "speaking_style": "precise, uses technical language, asks clarifying questions, thinks aloud"
+    },
+    {
+      "id": "C5",
+      "name": "Marshal Drax",
+      "alive": true,
+      "faction": "Iron Covenant",
+      "fact": "Marshal Drax leads the Iron Covenant and once saved Commander Orion's life. He signed the Treaty of Bastion. He distrusts all paracausal involvement.",
+      "personality": "pragmatic, blunt, honor-bound, deeply skeptical of anything paracausal",
+      "speaking_style": "terse, plain language, no metaphors, dislikes long conversations"
+    },
+    {
+      "id": "C6",
+      "name": "Shade-7",
+      "alive": true,
+      "faction": "Eclipse Syndicate",
+      "fact": "Shade-7 works for the Eclipse Syndicate and stole the Starcore Lens before the Nightforge Awakening. They operate from Veil Station and their ship the Shadow Whisper has evaded Vanguard patrols. Shade-7 knows what the Silent Frontier Expedition found.",
+      "personality": "evasive, mercenary, amused by others discomfort, self-serving",
+      "speaking_style": "deflects direct questions, half-truths, dry humor, never confirms anything directly"
+    },
+    {
+      "id": "C7",
+      "name": "Archon Veyl",
+      "alive": true,
+      "faction": "Void Collective",
+      "fact": "Archon Veyl commands the Void Collective, caused the Void Breach, and seeks the Astral Crown hidden in the Sunken Vault. He possesses the Void Key.",
+      "personality": "fanatical, serene, utterly certain, views all events as inevitable",
+      "speaking_style": "slow, deliberate, speaks as if reciting scripture, never raises voice"
+    },
+    {
+      "id": "C8",
+      "name": "Captain Mira",
+      "alive": false,
+      "faction": "Vanguard Coalition",
+      "fact": "Captain Mira is dead. She died during the Red Eclipse when the Ashen Legion attacked Ember Reach. She was Lyra Voss's sister. She cannot speak, appear, or be referenced as living.",
+      "personality": null,
+      "speaking_style": null
+    },
+    {
+      "id": "C9",
+      "name": "Thorn Alpha",
+      "alive": true,
+      "faction": "Verdant Swarm",
+      "fact": "Thorn Alpha leads the Verdant Swarm and possesses the Heartseed which controls portions of the swarm. They attacked mining operations during the Crystal Campaign.",
+      "personality": "alien, territorial, views humans as a blight",
+      "speaking_style": "minimal language, biological metaphors, refers to humans collectively never individually"
+    },
+    {
+      "id": "C10",
+      "name": "Admiral Sorel",
+      "alive": true,
+      "faction": "Solar Accord",
+      "fact": "Admiral Sorel commands the Solar Accord fleet and distrusts Archon Veyl personally after the Void Breach. She authorized the Silent Frontier Expedition and has never disclosed why.",
+      "personality": "cautious, politically savvy, carries guilt about the expedition",
+      "speaking_style": "measured, hedges statements, changes subject when the expedition is mentioned"
+    },
+    {
+      "id": "C11",
+      "name": "Dr. Cassian Vorne",
+      "alive": false,
+      "faction": "Vanguard Coalition",
+      "fact": "Dr. Cassian Vorne led the Silent Frontier Expedition as its chief scientist. He is dead. His last transmission mentioned a structure at Resonance Point that should not exist. He cannot be referenced as living.",
+      "personality": null,
+      "speaking_style": null
+    },
+    {
+      "id": "C12",
+      "name": "Ren Ashford",
+      "alive": true,
+      "faction": "Iron Covenant",
+      "fact": "Ren Ashford is a junior Iron Covenant scout who survived the Silent Frontier Expedition by deserting before the final approach to Resonance Point. He is the only survivor. He lives in hiding at the Iron Bastion and refuses to speak about what he saw.",
+      "personality": "traumatized, paranoid, deeply ashamed of deserting",
+      "speaking_style": "fragmented sentences, avoids eye contact, flinches at mentions of the frontier"
+    },
+    {
+      "id": "C13",
+      "name": "Lira Dawn",
+      "alive": true,
+      "faction": "Eclipse Syndicate",
+      "fact": "Lira Dawn is an Eclipse Syndicate information broker based at Veil Station. She sold navigational data to the Silent Frontier Expedition and knows the route they took.",
+      "personality": "professional, detached, everything has a price",
+      "speaking_style": "formal, transactional, speaks in terms of value and trade"
+    },
+    {
+      "id": "C14",
+      "name": "The Warden",
+      "alive": "unknown",
+      "faction": null,
+      "fact": "The Warden is an unknown entity encountered only through fragmented transmissions originating from the Silent Frontier. Its faction and nature are unknown. It refers to the expedition members in past tense.",
+      "personality": "unknown, speaks in riddles, aware of the player",
+      "speaking_style": "fragmented, poetic, unsettling, refers to events before they happen"
+    }
+  ],
+  "artifacts": [
+    {
+      "id": "A1",
+      "name": "Astral Crown",
+      "possessor": null,
+      "location": "Sunken Vault",
+      "fact": "The Astral Crown can amplify paracausal energy and is hidden in the Sunken Vault. Archon Veyl seeks it actively."
+    },
+    {
+      "id": "A2",
+      "name": "Starcore Lens",
+      "possessor": "Shade-7",
+      "location": null,
+      "fact": "The Starcore Lens can locate ancient relics. Shade-7 stole it before the Nightforge Awakening and currently possesses it."
+    },
+    {
+      "id": "A3",
+      "name": "Ember Sigil",
+      "possessor": null,
+      "location": null,
+      "fact": "The Ember Sigil unlocks the Nightforge and was forged on Ember Reach before its destruction. Its current location is unknown."
+    },
+    {
+      "id": "A4",
+      "name": "Nightforge",
+      "possessor": null,
+      "location": "Obsidian Reef",
+      "fact": "The Nightforge can create artifact weapons and is located at the Obsidian Reef, controlled by the Ashen Legion."
+    },
+    {
+      "id": "A5",
+      "name": "Heartseed",
+      "possessor": "Thorn Alpha",
+      "location": null,
+      "fact": "The Heartseed controls portions of the Verdant Swarm and is currently possessed by Thorn Alpha."
+    },
+    {
+      "id": "A6",
+      "name": "Void Key",
+      "possessor": "Archon Veyl",
+      "location": null,
+      "fact": "The Void Key opens gateways to the Black Meridian and is currently possessed by Archon Veyl."
+    },
+    {
+      "id": "A7",
+      "name": "Echo Prism",
+      "possessor": "Sage Elandra",
+      "location": null,
+      "fact": "The Echo Prism stores memories and is currently possessed by Sage Elandra, who recovered it from the Hollow Moon."
+    },
+    {
+      "id": "A8",
+      "name": "Radiant Shards",
+      "possessor": null,
+      "location": "Crystal Wastes",
+      "fact": "Radiant Shards power Vanguard technology and are mined in the Crystal Wastes."
+    },
+    {
+      "id": "A9",
+      "name": "Resonance Beacon",
+      "possessor": null,
+      "location": "Silent Frontier",
+      "fact": "The Resonance Beacon was carried by Dr. Cassian Vorne on the Silent Frontier Expedition. Its signal still transmits from Resonance Point. No one has retrieved it."
+    },
+    {
+      "id": "A10",
+      "name": "Vorne's Log",
+      "possessor": "Ren Ashford",
+      "location": null,
+      "fact": "Vorne's Log is Dr. Cassian Vorne's personal research journal, recovered by Ren Ashford before he deserted. It contains partial notes about what Vorne found at Resonance Point. Ren refuses to share it."
+    }
+  ],
+  "events": [
+    {
+      "id": "E1",
+      "name": "The Red Eclipse",
+      "involved": [
+        "Ashen Legion",
+        "Vanguard Coalition",
+        "Captain Mira",
+        "Commander Orion"
+      ],
+      "outcome": "Ember Reach destroyed, Captain Mira killed, Vanguard survived",
+      "fact": "The Red Eclipse was a major war in which the Ashen Legion attacked and destroyed Ember Reach. Captain Mira died. Commander Orion survived. This is the defining trauma of the Vanguard Coalition."
+    },
+    {
+      "id": "E2",
+      "name": "Battle of Helios Prime",
+      "involved": [
+        "Vanguard Coalition",
+        "Ashen Legion",
+        "Warlord Kharos",
+        "Lyra Voss"
+      ],
+      "outcome": "Vanguard victory, Kharos repelled",
+      "fact": "The Battle of Helios Prime ended in a Vanguard Coalition victory. Kharos commanded Ashen forces. Lyra Voss defended the station. This cemented Lyra's reputation."
+    },
+    {
+      "id": "E3",
+      "name": "Discovery of the Echo Prism",
+      "involved": [
+        "Sage Elandra",
+        "Celestial Order"
+      ],
+      "outcome": "Echo Prism recovered by Sage Elandra",
+      "fact": "Sage Elandra led the expedition that recovered the Echo Prism from the Hollow Moon. The laboratories there were abandoned and showed signs of paracausal interference."
+    },
+    {
+      "id": "E4",
+      "name": "The Nightforge Awakening",
+      "involved": [
+        "Ashen Legion",
+        "Shade-7"
+      ],
+      "outcome": "Nightforge activated, Starcore Lens stolen by Shade-7 beforehand",
+      "fact": "The Ember Sigil activated the Nightforge at the Obsidian Reef. Shade-7 stole the Starcore Lens before this event occurred, suggesting foreknowledge."
+    },
+    {
+      "id": "E5",
+      "name": "The Crystal Campaign",
+      "involved": [
+        "Vanguard Coalition",
+        "Thorn Alpha",
+        "Verdant Swarm"
+      ],
+      "outcome": "Vanguard secured Radiant Shards, Verdant Swarm pushed back",
+      "fact": "The Crystal Campaign secured Radiant Shards for the Vanguard in the Crystal Wastes. Thorn Alpha attacked mining operations during it, causing significant casualties."
+    },
+    {
+      "id": "E6",
+      "name": "The Void Breach",
+      "involved": [
+        "Archon Veyl",
+        "Void Collective",
+        "Celestial Order",
+        "Sage Elandra",
+        "Admiral Sorel"
+      ],
+      "outcome": "Contained but Black Meridian remains unstable",
+      "fact": "Archon Veyl caused the Void Breach near the Black Meridian. The Celestial Order helped contain it. Admiral Sorel coordinated the Solar Accord response. The Black Meridian remains unstable."
+    },
+    {
+      "id": "E7",
+      "name": "The Treaty of Bastion",
+      "involved": [
+        "Vanguard Coalition",
+        "Iron Covenant",
+        "Marshal Drax",
+        "Commander Orion"
+      ],
+      "outcome": "Trade agreement established",
+      "fact": "The Treaty of Bastion was signed at the Iron Bastion between the Vanguard Coalition and the Iron Covenant, establishing trade rights. Both Commander Orion and Marshal Drax were present."
+    },
+    {
+      "id": "E8",
+      "name": "The Silent Frontier Expedition",
+      "involved": [
+        "Dr. Cassian Vorne",
+        "Ren Ashford",
+        "Admiral Sorel",
+        "Vanguard Coalition",
+        "Iron Covenant"
+      ],
+      "outcome": "All hands lost except Ren Ashford who deserted. Cause unknown.",
+      "fact": "The Silent Frontier Expedition traveled beyond charted space to Resonance Point under Dr. Cassian Vorne. Admiral Sorel authorized it. Ren Ashford deserted before the final approach and is the only survivor. Vorne's last transmission mentioned a structure that should not exist. The Resonance Beacon still transmits from the frontier. Shade-7 sold navigational data to the expedition through Lira Dawn."
+    },
+    {
+      "id": "E9",
+      "name": "The Starcore Theft",
+      "involved": [
+        "Shade-7",
+        "Eclipse Syndicate",
+        "Ashen Legion"
+      ],
+      "outcome": "Starcore Lens in Shade-7's possession",
+      "fact": "Shade-7 stole the Starcore Lens just before the Nightforge Awakening, suggesting the Eclipse Syndicate had advance knowledge of the event. The Ashen Legion has never publicly acknowledged the theft."
+    },
+    {
+      "id": "E10",
+      "name": "The Veil Accord",
+      "involved": [
+        "Eclipse Syndicate",
+        "Lira Dawn",
+        "Shade-7",
+        "Silent Frontier Expedition"
+      ],
+      "outcome": "Expedition received navigational data, Eclipse Syndicate received unknown payment",
+      "fact": "The Veil Accord was a secret transaction in which Lira Dawn sold navigational data for the Silent Frontier route to the expedition. What the Eclipse Syndicate received in return has never been disclosed."
+    }
+  ],
+  "ships": [
+    {
+      "id": "S1",
+      "name": "Dawnbreaker",
+      "owner": "Commander Orion",
+      "location": "New Dawn Station",
+      "fact": "The Dawnbreaker belongs to Commander Orion and is docked at New Dawn Station."
+    },
+    {
+      "id": "S2",
+      "name": "Nightfall",
+      "owner": "Warlord Kharos",
+      "location": "Obsidian Reef",
+      "fact": "The Nightfall belongs to Warlord Kharos and is stationed at the Obsidian Reef."
+    },
+    {
+      "id": "S3",
+      "name": "Silver Halo",
+      "owner": "Sage Elandra",
+      "location": "Aether Spire",
+      "fact": "The Silver Halo belongs to Sage Elandra and is stationed at the Aether Spire."
+    },
+    {
+      "id": "S4",
+      "name": "Iron Resolve",
+      "owner": "Marshal Drax",
+      "location": "Iron Bastion",
+      "fact": "The Iron Resolve belongs to Marshal Drax and is docked at the Iron Bastion."
+    },
+    {
+      "id": "S5",
+      "name": "Shadow Whisper",
+      "owner": "Shade-7",
+      "location": "unknown",
+      "fact": "The Shadow Whisper belongs to Shade-7 and has evaded Vanguard patrols. Its current location is unknown."
+    },
+    {
+      "id": "S6",
+      "name": "Meridian Cross",
+      "owner": "Admiral Sorel",
+      "location": "Helios Prime",
+      "fact": "The Meridian Cross belongs to Admiral Sorel and is stationed at Helios Prime."
+    }
+  ],
+  "mystery_clues": [
+    {
+      "id": "M1",
+      "source": "Ren Ashford",
+      "clue": "Ren Ashford is the only survivor of the Silent Frontier Expedition. He deserted before the final approach to Resonance Point. He possesses Vorne's Log but refuses to share it. He knows what the beacon is transmitting but will not say."
+    },
+    {
+      "id": "M2",
+      "source": "Shade-7",
+      "clue": "Shade-7 sold navigational data to the expedition through Lira Dawn. Shade-7 knows what the expedition found because the Eclipse Syndicate intercepted Vorne's final transmission. Shade-7 will not reveal this for free."
+    },
+    {
+      "id": "M3",
+      "source": "Admiral Sorel",
+      "clue": "Admiral Sorel authorized the expedition without disclosing the real reason. She received an anomalous paracausal reading from Resonance Point six months before the expedition departed. She has suppressed this information."
+    },
+    {
+      "id": "M4",
+      "source": "Sage Elandra",
+      "clue": "The Echo Prism stores memories. Sage Elandra recovered a fragment from the Hollow Moon laboratories that appears to contain a memory of Resonance Point from before the expedition. She has not yet decoded it fully."
+    },
+    {
+      "id": "M5",
+      "source": "The Warden",
+      "clue": "The Warden communicates through the Resonance Beacon. It refers to the expedition members in past tense. It knows the player is coming. It says the structure at Resonance Point has existed longer than the Vanguard Coalition."
+    },
+    {
+      "id": "M6",
+      "source": "Lira Dawn",
+      "clue": "Lira Dawn knows the exact route the expedition took. She also knows the Eclipse Syndicate received a paracausal artifact as payment for the navigational data. She will sell this information."
+    }
+  ]
+}
