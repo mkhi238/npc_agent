@@ -1,12 +1,14 @@
 import dspy
 import os
 from dotenv import load_dotenv
+from retriever import FAISSRetriever
 
 load_dotenv()
 api_key = os.getenv("GROQ_API_KEY")
+INDEX_PATH = "/mnt/d/npc_agent"
+MODEL_NAME = "groq/llama-3.1-8b-instant"
 
-
-lm = dspy.LM("groq/llama-3.1-8b-instant", api_key = api_key)
+lm = dspy.LM(MODEL_NAME, api_key = api_key)
 dspy.configure(lm = lm)
 
 class Dialogue(dspy.Signature):
@@ -34,14 +36,38 @@ class NPCAgent(dspy.Module):
                            npc_personality = npc_personality)
     return result
 
+def check_duplicates(retr):
+  seen = set()
+  unique_retreieved = []
+  for i in retr:
+    if i['id'] not in seen:
+      seen.add(i['id'])
+      unique_retreieved.append(i)
+  return unique_retreieved
 
 if __name__ == "__main__":
-  agent = NPCAgent()
-  results = agent(
-    game_state="The player is at New Dawn Station and approaches Commander Orion",
-    lore_context="Commander Orion leads the Vanguard Coalition. Orion mentored Lyra Voss. Captain Mira died during the Red Eclipse.",
-    npc_name="Commander Orion",
-    npc_personality="formal, burdened by command, speaks in measured authoritative sentences, rarely uses contractions"
+    agent = NPCAgent()
+    retriever = FAISSRetriever(index_dir="/mnt/d/npc_agent")
+    
+    game_state = "The player is at New Dawn Station and approaches Commander Orion"
+    npc_name = "Commander Orion"
+    
+    state_results = retriever.retrieve(game_state, k=3)
+    npc_results = retriever.retrieve(npc_name, k=2)
+    retrieved = state_results + npc_results
+    
+    unique_ret = check_duplicates(retrieved)
+    lore_context = " ".join([retriever.flatten_entry(r) for r in unique_ret])
+    print(lore_context)
+    
+    npc_data = retriever.characters.get(npc_name)
+    npc_personality = npc_data['speaking_style']
+    
+    results = agent(
+        game_state=game_state,
+        lore_context=lore_context,
+        npc_name=npc_name,
+        npc_personality=npc_personality
     )
-  print("DIALOGUE:", results.dialogue)
-  print("REASONING:", results.reasoning)
+    print("DIALOGUE:", results.dialogue)
+    print("REASONING:", results.reasoning)
