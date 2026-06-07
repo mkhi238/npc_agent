@@ -5,7 +5,6 @@ from retriever import FAISSRetriever
 
 load_dotenv()
 api_key = os.getenv("GROQ_API_KEY")
-INDEX_PATH = "/mnt/d/npc_agent"
 MODEL_NAME = "groq/llama-3.1-8b-instant"
 
 lm = dspy.LM(MODEL_NAME, api_key = api_key)
@@ -19,9 +18,6 @@ class Dialogue(dspy.Signature):
   lore_context: str = dspy.InputField(desc="Relevant lore facts about characters, factions, and events retrieved from the knowledge base")
   npc_name: str = dspy.InputField(desc="Name of the NPC speaking, used to match their established personality and faction")
   npc_personality: str = dspy.InputField(desc="Speaking style and personality traits of this NPC")
-  
-  
-    
   dialogue: str = dspy.OutputField(desc="The NPC's spoken response, consistent with their personality and the provided lore")
   reasoning: str = dspy.OutputField(desc="Why this response is appropriate given the game state and lore constraints")
   
