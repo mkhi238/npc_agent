@@ -1,14 +1,4 @@
 import dspy
-import os
-from dotenv import load_dotenv
-from retriever import FAISSRetriever
-
-load_dotenv()
-api_key = os.getenv("GROQ_API_KEY")
-MODEL_NAME = "groq/llama-3.1-8b-instant"
-
-lm = dspy.LM(MODEL_NAME, api_key = api_key)
-dspy.configure(lm = lm)
 
 class Dialogue(dspy.Signature):
   """
@@ -25,12 +15,15 @@ class NPCAgent(dspy.Module):
   def __init__(self):
     self.generate = dspy.ChainOfThought(Dialogue)
   
-  def forward(self, game_state, lore_context, npc_name, npc_personality):
-    result = self.generate(game_state=game_state, 
-                           lore_context=lore_context, 
-                           npc_name = npc_name, 
-                           npc_personality = npc_personality)
-    return result
+  def forward(self, game_state, lore_context, npc_name, npc_personality, n=3):
+    candidates = []
+    for _ in range(n):
+      result = self.generate(game_state=game_state, 
+                            lore_context=lore_context, 
+                            npc_name = npc_name, 
+                            npc_personality = npc_personality)
+      candidates.append(result)
+    return candidates
 
 def check_duplicates(retr):
   seen = set()
@@ -41,29 +34,7 @@ def check_duplicates(retr):
       unique_retreieved.append(i)
   return unique_retreieved
 
-if __name__ == "__main__":
-    agent = NPCAgent()
-    retriever = FAISSRetriever(index_dir="/mnt/d/npc_agent")
-    
-    game_state = "The player is at New Dawn Station and approaches Commander Orion"
-    npc_name = "Commander Orion"
-    
-    state_results = retriever.retrieve(game_state, k=3)
-    npc_results = retriever.retrieve(npc_name, k=2)
-    retrieved = state_results + npc_results
-    
-    unique_ret = check_duplicates(retrieved)
-    lore_context = " ".join([retriever.flatten_entry(r) for r in unique_ret])
-    print(lore_context)
-    
-    npc_data = retriever.characters.get(npc_name)
-    npc_personality = npc_data['speaking_style']
-    
-    results = agent(
-        game_state=game_state,
-        lore_context=lore_context,
-        npc_name=npc_name,
-        npc_personality=npc_personality
-    )
-    print("DIALOGUE:", results.dialogue)
-    print("REASONING:", results.reasoning)
+def candidate_generator(candidates, checker, npc_name):
+  for c in candidates:
+    ruling, justification, flags = checker.check(c.dialogue, npc_name)
+    yield c, ruling, justification, flags

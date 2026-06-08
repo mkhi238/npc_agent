@@ -2,15 +2,11 @@ from pathlib import Path
 import numpy as np
 import faiss
 from sentence_transformers import SentenceTransformer
-import json
+from config import lore_data as data, EMBEDDING_MODEL
 
-MODEL_NAME = "BAAI/bge-small-en-v1.5"
-
-with open('/mnt/d/npc_agent/lore.json', 'r') as file:
-  data = json.load(file)
   
 class FAISSRetriever:
-  def __init__(self, index_dir, model_name = MODEL_NAME):
+  def __init__(self, index_dir, model_name = EMBEDDING_MODEL):
     self.index_dir = Path(index_dir)
     self.model_name = model_name
     

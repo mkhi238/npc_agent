@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from retriever import FAISSRetriever
 from constraints import ConstraintChecker
 from agent import NPCAgent, check_duplicates, candidate_generator
-from config import lore_data, MODEL_NAME, INDEX_PATH
+from config import lore_data, MODEL_NAME, MAX_ATTEMPTS
 
 load_dotenv()
 api_key = os.getenv("GROQ_API_KEY")
@@ -26,32 +26,35 @@ retrieved = state_results + npc_results
 
 unique_ret = check_duplicates(retrieved)
 lore_context = " ".join([retriever.flatten_entry(r) for r in unique_ret])
-print(lore_context)
 
 npc_data = retriever.characters.get(npc_name)
 npc_personality = npc_data['speaking_style']
 
-results = agent(
-    game_state=game_state,
-    lore_context=lore_context,
-    npc_name=npc_name,
-    npc_personality=npc_personality
-)
+for attempt in range(MAX_ATTEMPTS):
+  results = agent(
+      game_state=game_state,
+      lore_context=lore_context,
+      npc_name=npc_name,
+      npc_personality=npc_personality
+  )
 
-generator = candidate_generator(results, ConstraintChecker(lore_data), npc_name)
-best, best_ruling, best_justification, best_flags = None, None, None, None
-#lazy evaluation on candidate strings
-for candidate, ruling, justification, flags in generator:
-  if ruling.strip().upper() == "PASS":
-    best, best_ruling, best_justification, best_flags = candidate, ruling, justification, flags
-    break
-  if best is None or len(flags) < len(best_flags):
-    best = candidate
-    best_ruling = ruling
-    best_justification = justification
-    best_flags = flags
+  generator = candidate_generator(results, ConstraintChecker(lore_data), npc_name)
+  found_pass = False
+  best, best_ruling, best_justification, best_flags = None, None, None, None
+  #lazy evaluation on candidate strings
+  for candidate, ruling, justification, flags in generator:
+    if ruling.strip().upper() == "PASS":
+      best, best_ruling, best_justification, best_flags = candidate, ruling, justification, flags
+      found_pass = True
+      break
+    if best is None or len(flags) < len(best_flags):
+      best = candidate
+      best_ruling = ruling
+      best_justification = justification
+      best_flags = flags
+  if found_pass: break 
 print("DIALOGUE:", best.dialogue)
-print("REASONING:", best.reasoning)
-print("RULING:", best_ruling)
-print("JUSTIFICATION:", best_justification)
-print("FLAGS:", best_flags)
+#print("REASONING:", best.reasoning)
+#print("RULING:", best_ruling)
+#print("JUSTIFICATION:", best_justification)
+#print("FLAGS:", best_flags)

@@ -1,14 +1,5 @@
 import dspy
-import os
-from dotenv import load_dotenv
-
-load_dotenv()
-api_key = os.getenv("GROQ_API_KEY")
-MODEL_NAME = "groq/llama-3.1-8b-instant"
-
-lm = dspy.LM(MODEL_NAME, api_key = api_key)
-dspy.configure(lm = lm)
-
+  
 class Ruling(dspy.Signature):
     """ 
     You are a strict lore consistency judge for a sci-fi game world. 
@@ -21,7 +12,8 @@ class Ruling(dspy.Signature):
     dialogue: str = dspy.InputField(desc="The NPC dialogue to evaluate")
     flags: str = dspy.InputField(desc="Lore consistency warnings flagged by the hard checker")
     char_profile: str = dspy.InputField(desc="The NPC's established personality, faction, and speaking style")
-    ruling: str = dspy.OutputField(desc="PASS if dialogue is lore-consistent, FAIL with specific reason if not")
+    justification: str = dspy.OutputField(desc="PASS if dialogue is lore-consistent, FAIL with specific reason if not")
+    ruling: str = dspy.OutputField(desc = "Exactly one word: PASS or FAIL, consistent with the justification from above")
 
 class JudgeAgent(dspy.Module):
   def __init__(self):
@@ -56,7 +48,7 @@ class ConstraintChecker:
       # Dead characters
       for name in self.dead_characters:
           if name in dialogue:
-              flags.append(f"WARNING: '{name}' appears in dialogue but is dead. Ensure they are not referenced as living.")
+              flags.append(f"WARNING: '{name}' appears in dialogue but is dead. Only flag as FAIL if they are referenced as currently alive or actively speaking. Past tense references to their legacy or actions are acceptable.")
 
       # Destroyed locations
       for loc in self.destroyed_locations:
@@ -123,25 +115,12 @@ class ConstraintChecker:
       flags = flags_str,
       char_profile = char_profile
     )
-    return result.ruling
+    return result.ruling, result.justification
   
   def check(self, dialouge, npc_name):
     flags = self.flag_exceptions(dialouge)
     char_profile = self.get_char_profile(npc_name)
-    ruling = self.llm_check(dialouge, flags, char_profile)
-    return ruling, flags
-    
-  
-if __name__ == "__main__":
-  import json
-  with open('/mnt/d/npc_agent/lore.json', 'r') as f:
-      lore_data = json.load(f)
-  
-  checker = ConstraintChecker(lore_data)
-  
-  test_dialogue = "Captain Mira, who is dead, will meet you at New Dawn Station. She has been expecting your arrival."
-  ruling, flags = checker.check(test_dialogue, "Commander Orion")
-  
-  print("FLAGS:", flags)
-  print("RULING:", ruling)  
+    ruling, justification = self.llm_check(dialouge, flags, char_profile)
+    return ruling, justification, flags
+
   
