@@ -54,5 +54,6 @@ class FAISSRetriever:
   def measure_clue_similarity(self, player_message, clue_text):
     player_message_vector = self.encode_query(player_message)
     clue_text_vector = self.encode_query(clue_text)
-    similarity = float(np.dot(player_message_vector, clue_text_vector.T))
+    print(np.dot(player_message_vector, clue_text_vector.T).flatten())
+    similarity = float(np.dot(player_message_vector, clue_text_vector.T).flatten()[0])
     return similarity
