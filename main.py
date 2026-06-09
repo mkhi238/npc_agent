@@ -78,7 +78,7 @@ while True:
   unique_ret = check_duplicates(retrieved)
   lore_context = " ".join([retriever.flatten_entry(r) for r in unique_ret])
 
-  if npc.clue:
+  if npc.clue and not clue_unlocked:
     similarity = retriever.measure_clue_similarity(player_input, npc.clue_topic)
     clue_unlocked = True if (similarity > CLUE_THRESHOLD or npc.message_count >= MAX_MESSAGES_BEFORE_CLUE) else False
   
