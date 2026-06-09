@@ -8,6 +8,8 @@ class Dialogue(dspy.Signature):
   lore_context: str = dspy.InputField(desc="Relevant lore facts about characters, factions, and events retrieved from the knowledge base")
   npc_name: str = dspy.InputField(desc="Name of the NPC speaking, used to match their established personality and faction")
   npc_personality: str = dspy.InputField(desc="Speaking style and personality traits of this NPC")
+  npc_secret: str = dspy.InputField(desc="Secret information this NPC holds. Only reveal this naturally when appropriate. Never volunteer it immediately.")
+  next_npc: str = dspy.InputField(desc="The next character the player should speak to. Weave naturally into conversation when appropriate. Empty if none.")
   dialogue: str = dspy.OutputField(desc="The NPC's spoken response, consistent with their personality and the provided lore")
   reasoning: str = dspy.OutputField(desc="Why this response is appropriate given the game state and lore constraints")
   
@@ -15,13 +17,16 @@ class NPCAgent(dspy.Module):
   def __init__(self):
     self.generate = dspy.ChainOfThought(Dialogue)
   
-  def forward(self, game_state, lore_context, npc_name, npc_personality, n=3):
+  def forward(self, game_state, lore_context, npc_name, npc_personality, next_npc, npc_secret, n=3):
     candidates = []
     for _ in range(n):
       result = self.generate(game_state=game_state, 
                             lore_context=lore_context, 
                             npc_name = npc_name, 
-                            npc_personality = npc_personality)
+                            npc_personality = npc_personality,
+                            next_npc=next_npc,
+                            npc_secret = npc_secret
+                            )
       candidates.append(result)
     return candidates
 

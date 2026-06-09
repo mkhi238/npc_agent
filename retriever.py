@@ -2,7 +2,7 @@ from pathlib import Path
 import numpy as np
 import faiss
 from sentence_transformers import SentenceTransformer
-from config import lore_data as data, EMBEDDING_MODEL
+from config import lore_data, EMBEDDING_MODEL
 
   
 class FAISSRetriever:
@@ -13,7 +13,7 @@ class FAISSRetriever:
     self.model = SentenceTransformer(model_name, device = 'cpu')
     self.texts = []
     self.metadata = []
-    for category, entries in data.items():
+    for _, entries in lore_data.items():
       for jsons in entries:
         text = self.flatten_entry(jsons)
         self.texts.append(text)
@@ -22,7 +22,7 @@ class FAISSRetriever:
     dim = self.embeddings.shape[1]
     self.index = faiss.IndexFlatIP(dim)
     self.index.add(self.embeddings)
-    self.characters = {c['name']: c for c in data['characters']}
+    self.characters = {c['name']: c for c in lore_data['characters']}
     
     #function to make the json one string
   def flatten_entry(self, entry):
@@ -50,3 +50,9 @@ class FAISSRetriever:
     for i in idx[0]:
       metadata_queries.append(self.metadata[i])
     return metadata_queries
+  
+  def measure_clue_similarity(self, player_message, clue_text):
+    player_message_vector = self.encode_query(player_message)
+    clue_text_vector = self.encode_query(clue_text)
+    similarity = float(np.dot(player_message_vector, clue_text_vector.T))
+    return similarity
