@@ -1,22 +1,13 @@
-import dspy
-import os
-from dotenv import load_dotenv
 from retriever import FAISSRetriever
 from constraints import ConstraintChecker
 from agent import NPCAgent, check_duplicates, candidate_generator
 from character import NPCNode
-from config import lore_data, MODEL_NAME, MAX_ATTEMPTS, CLUE_THRESHOLD, MAX_MESSAGES_BEFORE_CLUE
+from config import lore_data, INDEX_PATH, MAX_ATTEMPTS, CLUE_THRESHOLD, MAX_MESSAGES_BEFORE_CLUE, configure_lm
 
-load_dotenv()
-api_key = os.getenv("GROQ_API_KEY")
-MODEL_NAME = "groq/llama-3.1-8b-instant"
-
-lm = dspy.LM(MODEL_NAME, api_key = api_key)
-dspy.configure(lm = lm)
-
+configure_lm()
 agent = NPCAgent()
-retriever = FAISSRetriever(index_dir="/mnt/d/npc_agent")
-
+retriever = FAISSRetriever(index_dir=INDEX_PATH)
+checker = ConstraintChecker(lore_data)
 
 # instantiate NPC
 orion = NPCNode.from_lore(lore_data, "Commander Orion")
@@ -93,7 +84,7 @@ while True:
         npc_secret= npc_secret,
         next_npc = npc.next_npc.name if (clue_unlocked and npc.next_npc) else ""
     )
-    generator = candidate_generator(results, ConstraintChecker(lore_data), npc.name)
+    generator = candidate_generator(results, checker, npc.name)
     found_pass = False
     best, best_ruling, best_justification, best_flags = None, None, None, None
     #lazy evaluation on candidate strings

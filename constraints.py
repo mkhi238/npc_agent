@@ -1,4 +1,7 @@
 import dspy
+import re
+
+
   
 class Ruling(dspy.Signature):
     """ 
@@ -17,6 +20,7 @@ class Ruling(dspy.Signature):
 
 class JudgeAgent(dspy.Module):
   def __init__(self):
+    super().__init__()
     self.generate = dspy.ChainOfThought(Ruling)
     
   def forward(self, dialouge_str, flags, char_profile):
@@ -24,7 +28,10 @@ class JudgeAgent(dspy.Module):
                            flags = flags,
                            char_profile = char_profile)
     return result
-  
+
+def mentions(term, text):
+    return re.search(rf"(?<!\w){re.escape(term)}(?!\w)", text) is not None
+
 class ConstraintChecker:
   #constraint checker takes in results.dialouge and the FAISS retriever
   def __init__(self, lore_data):
@@ -47,32 +54,32 @@ class ConstraintChecker:
       
       # Dead characters
       for name in self.dead_characters:
-          if name in dialogue:
+          if mentions(name, dialogue):
               flags.append(f"WARNING: '{name}' appears in dialogue but is dead. Only flag as FAIL if they are referenced as currently alive or actively speaking. Past tense references to their legacy or actions are acceptable.")
 
       # Destroyed locations
       for loc in self.destroyed_locations:
-          if loc in dialogue:
+          if mentions(loc, dialogue):
               flags.append(f"WARNING: '{loc}' appears in dialogue but was destroyed and no longer exists. Ensure it is not referenced as a reachable location.")
 
       # Uncontrolled locations
       for loc in self.uncontrolled_locations:
-          if loc in dialogue:
+          if mentions(loc, dialogue):
               flags.append(f"WARNING: '{loc}' appears in dialogue but has no controlling faction. Ensure it is not referenced as under any faction's control.")
 
       # Artifact possessors
       for artifact, possessor in self.artifact_possessors.items():
-          if artifact in dialogue:
+          if mentions(artifact, dialogue):
               flags.append(f"WARNING: '{artifact}' appears in dialogue. It is currently possessed by {possessor}. Ensure possession is referenced correctly.")
 
       # Unpossessed artifacts
       for artifact in self.unpossessed_artifacts:
-          if artifact in dialogue:
+          if mentions(artifact, dialogue):
               flags.append(f"WARNING: '{artifact}' appears in dialogue but has no current possessor. Ensure it is not referenced as held by any character.")
 
       # Artifacts with unknown location
       for artifact in self.artifact_unknown_loc:
-          if artifact in dialogue:
+          if mentions(artifact, dialogue):
               flags.append(f"WARNING: '{artifact}' appears in dialogue but its location is unknown. Ensure it is not referenced as being in a specific place.")
 
       # Faction enemies
@@ -90,13 +97,13 @@ class ConstraintChecker:
                       flags.append(f"NOTE: '{faction}' and '{ally}' both appear in dialogue and are allies. Ensure their relationship is portrayed correctly.")
 
       # Character faction allegiance
-      for char, faction in self.character_factions.items():
-          if char in dialogue and faction and faction in dialogue:
-              flags.append(f"WARNING: '{char}' appears alongside their faction '{faction}'. Ensure their allegiance is portrayed correctly.")
+      #for char, faction in self.character_factions.items():
+      #    if char in dialogue and faction and faction in dialogue:
+      #        flags.append(f"WARNING: '{char}' appears alongside their faction '{faction}'. Ensure their allegiance is portrayed correctly.")
 
       # Alive characters (sanity check — flag if referenced in a death context)
       for name in self.alive_characters:
-          if name in dialogue:
+          if mentions(name, dialogue):
               if f"{name} died" in dialogue or f"{name} is dead" in dialogue:
                   flags.append(f"WARNING: '{name}' appears to be referenced as dead but is alive.")
 
@@ -119,6 +126,10 @@ class ConstraintChecker:
   
   def check(self, dialouge, npc_name):
     flags = self.flag_exceptions(dialouge)
+    if npc_name in dialouge:
+        flags.append(
+            f"WARNING: '{npc_name}' refers to themselves by name. NPCs must speak in first person, not narrate themselves."
+        )
     char_profile = self.get_char_profile(npc_name)
     ruling, justification = self.llm_check(dialouge, flags, char_profile)
     return ruling, justification, flags
