@@ -603,6 +603,11 @@
       "id": "M6",
       "source": "Lira Dawn",
       "clue": "Lira Dawn knows the exact route the expedition took. She also knows the Eclipse Syndicate received a paracausal artifact as payment for the navigational data. She will sell this information."
+    },
+    {
+      "id": "M7",
+      "source": "Commander Orion",
+      "clue": "Commander Orion authorized Vanguard support for the Silent Frontier Expedition. He knows it traveled beyond charted space to Resonance Point under Dr. Cassian Vorne, that all hands were lost except one deserter, and that Admiral Sorel authorized it."
     }
   ]
 }

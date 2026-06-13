@@ -2,6 +2,9 @@ import json
 import dspy
 from dotenv import load_dotenv
 import os
+from groq import Groq
+load_dotenv()
+api_key = os.getenv("GROQ_API_KEY")
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 INDEX_PATH = BASE_DIR
@@ -18,9 +21,14 @@ MAX_ATTEMPTS = 3
 CLUE_THRESHOLD = 0.5
 MAX_MESSAGES_BEFORE_CLUE = 15
 
-load_dotenv()
-api_key = os.getenv("GROQ_API_KEY")
+
+TTS_MODEL = "canopylabs/orpheus-v1-english"
+CHAR_LIMIT = 200
+
 
 def configure_lm():
     lm = dspy.LM(MODEL_NAME, api_key=api_key, temperature=0.35)
     dspy.configure(lm=lm)
+    
+def configure_tts():
+    return Groq(api_key=os.environ.get("GROQ_API_KEY"))

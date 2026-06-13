@@ -35,11 +35,11 @@ class NPCNode:
     @classmethod
     def from_lore(cls, lore_data, npc_name):
       char_data = {}
-      clues = {}
+      clue = ""
       for c in lore_data['characters']:
           if c['name'] == npc_name:
               char_data = c
       for m in lore_data['mystery_clues']:
           if m['source'] == npc_name:
-              clues = m['clue']
-      return cls(clue=clues, char_data=char_data)
+              clue = m['clue']
+      return cls(clue=clue, char_data=char_data)

@@ -1,8 +1,6 @@
 import dspy
 import re
 
-
-  
 class Ruling(dspy.Signature):
     """ 
     You are a strict lore consistency judge for a sci-fi game world. 
