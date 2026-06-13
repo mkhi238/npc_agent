@@ -1,15 +1,13 @@
 ---
 title: Silent Frontier
-emoji: 🦀
-colorFrom: yellow
-colorTo: blue
+emoji: 🛰️
+colorFrom: green
+colorTo: gray
 sdk: gradio
-sdk_version: 6.18.0
-python_version: '3.13'
+sdk_version: 6.17.3
+python_version: "3.11"
 app_file: app.py
 pinned: false
 license: mit
 short_description: A reasoning agent that role-plays seven NPCs.
 ---
-
-Check out the configuration reference at https://huggingface.co/docs/hub/spaces-config-reference
