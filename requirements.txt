@@ -1,0 +1,7 @@
+gradio
+dspy-ai
+groq
+faiss-cpu
+sentence-transformers
+numpy
+python-dotenv
