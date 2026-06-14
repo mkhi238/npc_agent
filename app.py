@@ -5,6 +5,7 @@ from agent import NPCAgent, check_duplicates, candidate_generator
 from character import NPCNode
 from config import lore_data, INDEX_PATH, MAX_ATTEMPTS, CLUE_THRESHOLD, MAX_MESSAGES_BEFORE_CLUE, configure_lm
 from tts import synthesize
+import os
 
 configure_lm()
 agent = NPCAgent()
@@ -47,6 +48,7 @@ NPC_MAP = {
     "The Warden":      warden,
 }
 
+# Orpheus voice per NPC (Groq orpheus-v1-english voices).
 # Male: troy, austin, daniel.  Female: autumn, diana, hannah.
 VOICE_MAP = {
     "Commander Orion": "troy",
@@ -56,6 +58,18 @@ VOICE_MAP = {
     "Ren Ashford":     "austin",
     "Sage Elandra":    "autumn",
     "The Warden":      "diana",
+}
+
+# Character portrait per NPC (files live in ./assets, anchored to this file's dir).
+_APP_DIR = os.path.dirname(os.path.abspath(__file__))
+IMAGE_MAP = {
+    "Commander Orion": os.path.join(_APP_DIR, "assets", "orion.png"),
+    "Admiral Sorel":   os.path.join(_APP_DIR, "assets", "sorel.png"),
+    "Lira Dawn":       os.path.join(_APP_DIR, "assets", "lira.png"),
+    "Shade-7":         os.path.join(_APP_DIR, "assets", "shade7.png"),
+    "Ren Ashford":     os.path.join(_APP_DIR, "assets", "ren.png"),
+    "Sage Elandra":    os.path.join(_APP_DIR, "assets", "elandra.png"),
+    "The Warden":      os.path.join(_APP_DIR, "assets", "warden.png"),
 }
 
 # Short "what you learned" label shown in progress table and case file once unlocked.
@@ -402,8 +416,9 @@ def switch_npc(npc_name, visited_str, unlocked):
     npc = NPC_MAP[npc_name]
     info = f"**{npc.name}** | {npc.faction or 'Unknown'}\n\n_{npc.personality}_"
     h1, h2 = HINTS.get(npc_name, ["", ""])
+    portrait = IMAGE_MAP.get(npc_name)
     return ([], "", npc_name, info, svg, build_progress(unlocked), h1, h2,
-            build_status(npc_name, unlocked, None))
+            build_status(npc_name, unlocked, None), portrait)
 
 
 def reset_game():
@@ -418,7 +433,7 @@ def reset_game():
     h1, h2 = HINTS[ENTRY_NPC]
     return (unlocked, delivered, [], "", ENTRY_NPC, "", info, svg,
             build_progress(unlocked), build_casefile(unlocked),
-            h1, h2, build_status(ENTRY_NPC, unlocked, None))
+            h1, h2, build_status(ENTRY_NPC, unlocked, None), IMAGE_MAP.get(ENTRY_NPC))
 
 
 CSS = """
@@ -431,6 +446,9 @@ body, .gradio-container { background: #05080d !important; color: #c0d8d8 !import
     border: 1px solid #1a3a3a !important; font-family: monospace !important; }
 .gr-chatbot { background: #080f0f !important; border: 1px solid #1a3a3a !important; }
 #npc_audio { max-width: 340px; }
+#npc_portrait { max-width: 240px; margin-left: auto; margin-right: auto; border: 1px solid #1a3a3a; border-radius: 8px; }
+#npc_portrait img { border-radius: 8px; }
+#npc_portrait .icon-button-wrapper, #npc_portrait .toolbar { display: none !important; }
 #npc_audio .waveform-container { display: none !important; }
 #npc_audio .timestamps { display: none !important; }
 footer { display: none !important; }
@@ -470,6 +488,10 @@ with gr.Blocks(title="Silent Frontier - NPC Investigation") as demo:
         with gr.Column(scale=4):
             gr.HTML("<p style='font-family:monospace;font-size:10px;color:#2a6e6e;letter-spacing:2px;'>INVESTIGATION MAP</p>")
             svg_display = gr.HTML(build_svg("Commander Orion", set(), INIT_UNLOCKED))
+            gr.HTML("<p style='font-family:monospace;font-size:10px;color:#2a6e6e;letter-spacing:2px;margin-top:12px;text-align:center;'>NOW SPEAKING WITH</p>")
+            portrait_display = gr.Image(value=IMAGE_MAP[ENTRY_NPC], show_label=False,
+                                        height=260, interactive=False,
+                                        container=False, elem_id="npc_portrait")
             gr.HTML("<p style='font-family:monospace;font-size:10px;color:#2a6e6e;letter-spacing:2px;margin-top:12px;'>CONTACT</p>")
             npc_info = gr.Markdown(
                 "**Commander Orion** | Vanguard Coalition\n\n_formal, burdened by command, deeply loyal_"
@@ -523,15 +545,17 @@ with gr.Blocks(title="Silent Frontier - NPC Investigation") as demo:
             fn=lambda v, u, n=name: switch_npc(n, v, u),
             inputs=[visited_state, unlocked_state],
             outputs=[chatbot, reasoning_display, active_npc_state, npc_info, svg_display,
-                     progress_display, hint1_md, hint2_md, status_display],
+                     progress_display, hint1_md, hint2_md, status_display, portrait_display],
         )
 
     reset_outputs = [unlocked_state, delivered_state, chatbot, reasoning_display,
                      active_npc_state, visited_state, npc_info, svg_display,
-                     progress_display, casefile_display, hint1_md, hint2_md, status_display]
+                     progress_display, casefile_display, hint1_md, hint2_md, status_display,
+                     portrait_display]
     reset_btn.click(fn=reset_game, inputs=None, outputs=reset_outputs)
     demo.load(fn=reset_game, inputs=None, outputs=reset_outputs)
 
 
 if __name__ == "__main__":
-    demo.launch(server_name="0.0.0.0", server_port=7860, share=False, css=CSS)
+    demo.launch(server_name="0.0.0.0", server_port=7860, share=False, css=CSS,
+                allowed_paths=[os.path.join(_APP_DIR, "assets")])
