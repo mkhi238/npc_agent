@@ -308,8 +308,11 @@ def build_secret(npc, is_unlocked, is_delivered):
     else:
         secret = (
             f"The player has not yet earned the full story of {npc.clue_topic}. "
-            f"Talk warmly and answer their questions. If they steer toward it, give real partial "
-            f"detail, but hold the deepest specifics for now."
+            f"Answer in character in two or three sentences. Stay grounded in what you "
+            f"actually know. Do not invent new names, ships, factions, or events, and do "
+            f"not name other characters unless the player names them first. If the player "
+            f"presses toward the topic, give a small real hint but hold the deepest "
+            f"specifics. Keep it short and do not ramble."
         )
         next_npc = ""
     return secret, next_npc
