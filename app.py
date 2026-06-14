@@ -3,11 +3,12 @@ from retriever import FAISSRetriever
 from constraints import ConstraintChecker
 from agent import NPCAgent, check_duplicates, candidate_generator
 from character import NPCNode
-from config import lore_data, INDEX_PATH, MAX_ATTEMPTS, CLUE_THRESHOLD, MAX_MESSAGES_BEFORE_CLUE, configure_lm
+from config import lore_data, INDEX_PATH, MAX_ATTEMPTS, CLUE_THRESHOLD, MAX_MESSAGES_BEFORE_CLUE, configure_lm, build_lm, MODEL_REGISTRY, DEFAULT_MODEL
 from tts import synthesize
 import os
-
+import dspy
 configure_lm()
+ACTIVE_LM = build_lm(DEFAULT_MODEL)
 agent = NPCAgent()
 retriever = FAISSRetriever(index_dir=INDEX_PATH)
 checker = ConstraintChecker(lore_data)
@@ -366,14 +367,15 @@ def run_conversation(player_input, history, active_npc_name, visited_str,
     best_flags = []
 
     for _ in range(MAX_ATTEMPTS):
-        results = agent(
-            game_state=game_state,
-            lore_context=lore_context,
-            npc_name=npc.name,
-            npc_personality=f"Speaking style: {npc.speaking_style}; Personality: {npc.personality}",
-            npc_secret=npc_secret,
-            next_npc=next_npc,
-        )
+        with dspy.context(lm = ACTIVE_LM):
+            results = agent(
+                game_state=game_state,
+                lore_context=lore_context,
+                npc_name=npc.name,
+                npc_personality=f"Speaking style: {npc.speaking_style}; Personality: {npc.personality}",
+                npc_secret=npc_secret,
+                next_npc=next_npc,
+            )
         found_pass = False
         for candidate, ruling, justification, flags in candidate_generator(results, checker, npc.name):
             if ruling.strip().upper() == "PASS":
@@ -435,6 +437,11 @@ def reset_game():
             build_progress(unlocked), build_casefile(unlocked),
             h1, h2, build_status(ENTRY_NPC, unlocked, None), IMAGE_MAP.get(ENTRY_NPC))
 
+def switch_model(choice):
+    """Set the active text model (used per-call via dspy.context)."""
+    global ACTIVE_LM
+    ACTIVE_LM = build_lm(choice)
+    return f"<div style='font-family:monospace;font-size:11px;color:#8ecfcf;'>Active text model: <span style='color:#4af0c4;'>{choice}</span></div>"
 
 CSS = """
 body, .gradio-container { background: #05080d !important; color: #c0d8d8 !important; }
@@ -476,6 +483,16 @@ with gr.Blocks(title="Silent Frontier - NPC Investigation") as demo:
         </div>
         """)
         reset_btn = gr.Button("RESET", size="sm", scale=0, min_width=90)
+
+    with gr.Row():
+        model_selector = gr.Dropdown(
+            choices=list(MODEL_REGISTRY.keys()), value=DEFAULT_MODEL,
+            label="TEXT MODEL", scale=2,
+        )
+        model_status = gr.HTML(
+            "<div style='font-family:monospace;font-size:11px;color:#8ecfcf;'>"
+            f"Active text model: <span style='color:#4af0c4;'>{DEFAULT_MODEL}</span></div>"
+        )
 
     with gr.Accordion("REASONING TRACE + CONSTRAINT LOG", open=False):
         reasoning_display = gr.Textbox(
@@ -554,6 +571,8 @@ with gr.Blocks(title="Silent Frontier - NPC Investigation") as demo:
                      portrait_display]
     reset_btn.click(fn=reset_game, inputs=None, outputs=reset_outputs)
     demo.load(fn=reset_game, inputs=None, outputs=reset_outputs)
+    model_selector.change(fn=switch_model, inputs=model_selector, outputs=model_status)
+
 
 
 if __name__ == "__main__":
