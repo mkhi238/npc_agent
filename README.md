@@ -11,3 +11,5 @@ pinned: false
 license: mit
 short_description: A reasoning agent that role-plays seven NPCs.
 ---
+
+Author: mkhi238
