@@ -34,7 +34,7 @@ class NPCAgent(dspy.Module):
     super().__init__()
     self.generate = dspy.ChainOfThought(Dialogue)
   
-  def forward(self, game_state, lore_context, npc_name, npc_personality, next_npc, npc_secret, n=3):
+  def forward(self, game_state, lore_context, npc_name, npc_personality, next_npc, npc_secret, n=2):
     candidates = []
     for _ in range(n):
       result = self.generate(game_state=game_state, 

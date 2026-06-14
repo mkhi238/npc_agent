@@ -18,7 +18,7 @@ with open(LORE_PATH, 'r') as f:
 
 EMBEDDING_MODEL = "BAAI/bge-small-en-v1.5"
 MODEL_NAME = 'groq/llama-3.1-8b-instant'
-MAX_ATTEMPTS = 3
+MAX_ATTEMPTS = 2
 CLUE_THRESHOLD = 0.5
 MAX_MESSAGES_BEFORE_CLUE = 15
 
@@ -34,14 +34,14 @@ MODEL_REGISTRY = {
         "api_key": api_key,
         "api_base": None,
     },
-    "NVIDIA Nemotron Mini 4B": {
-        "model": "openai/nvidia/nemotron-mini-4b-instruct",  # openai/ prefix -> OpenAI-compatible route
+    "NVIDIA Nemotron Nano 9B": {
+        "model": "openai/nvidia/nvidia-nemotron-nano-9b-v2",
         "api_key": nvidia_api_key,
         "api_base": "https://integrate.api.nvidia.com/v1",
     },
 }
 
-DEFAULT_MODEL = "NVIDIA Nemotron Mini 4B"
+DEFAULT_MODEL = "Groq Llama 3.1 8B"
 
 def build_lm(choice=DEFAULT_MODEL):
     """Build (but do not globally configure) a dspy.LM for the chosen model."""
