@@ -23,13 +23,6 @@ The default text model is **NVIDIA Nemotron Mini 4B**, a 4B model fine-tuned for
 ## ⚙️ How it's built
 
 DSPy reasoning agent with best-of-N sampling, FAISS retrieval over a hand-authored lore graph, a neurosymbolic constraint checker, per-NPC SQLite memory, Orpheus voice, and a custom Gradio dashboard with a node map, case file, and live reasoning trace.
-
-## 🎬 Demo
-
-**Demo video:** DEMO_VIDEO_LINK_HERE
-
-**Social post:** SOCIAL_POST_LINK_HERE
-
 ---
 
 Built by **mkhi238** for the Hugging Face × Gradio Build Small hackathon.
