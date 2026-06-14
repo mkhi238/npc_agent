@@ -3,11 +3,13 @@ from retriever import FAISSRetriever
 from constraints import ConstraintChecker
 from agent import NPCAgent, check_duplicates, candidate_generator
 from character import NPCNode
-from config import lore_data, INDEX_PATH, MAX_ATTEMPTS, CLUE_THRESHOLD, MAX_MESSAGES_BEFORE_CLUE, configure_lm, MODEL_REGISTRY, DEFAULT_MODEL
+from config import lore_data, INDEX_PATH, MAX_ATTEMPTS, CLUE_THRESHOLD, MAX_MESSAGES_BEFORE_CLUE, configure_lm, build_lm, MODEL_REGISTRY, DEFAULT_MODEL
 from tts import synthesize
 import os
+import dspy
 
 configure_lm()
+ACTIVE_LM = build_lm(DEFAULT_MODEL)
 agent = NPCAgent()
 retriever = FAISSRetriever(index_dir=INDEX_PATH)
 checker = ConstraintChecker(lore_data)
@@ -369,14 +371,15 @@ def run_conversation(player_input, history, active_npc_name, visited_str,
     best_flags = []
 
     for _ in range(MAX_ATTEMPTS):
-        results = agent(
-            game_state=game_state,
-            lore_context=lore_context,
-            npc_name=npc.name,
-            npc_personality=f"Speaking style: {npc.speaking_style}; Personality: {npc.personality}",
-            npc_secret=npc_secret,
-            next_npc=next_npc,
-        )
+        with dspy.context(lm=ACTIVE_LM):
+            results = agent(
+                game_state=game_state,
+                lore_context=lore_context,
+                npc_name=npc.name,
+                npc_personality=f"Speaking style: {npc.speaking_style}; Personality: {npc.personality}",
+                npc_secret=npc_secret,
+                next_npc=next_npc,
+            )
         found_pass = False
         for candidate, ruling, justification, flags in candidate_generator(results, checker, npc.name):
             if ruling.strip().upper() == "PASS":
@@ -440,9 +443,10 @@ def reset_game():
 
 
 def switch_model(choice):
-    """Reconfigure DSPy's global LM to the chosen text model."""
-    active = configure_lm(choice)
-    return f"<div style='font-family:monospace;font-size:11px;color:#8ecfcf;'>Active text model: <span style='color:#4af0c4;'>{active}</span></div>"
+    """Swap the active text model without touching DSPy's thread-locked global config."""
+    global ACTIVE_LM
+    ACTIVE_LM = build_lm(choice)
+    return f"<div style='font-family:monospace;font-size:11px;color:#8ecfcf;'>Active text model: <span style='color:#4af0c4;'>{choice}</span></div>"
 
 
 CSS = """
