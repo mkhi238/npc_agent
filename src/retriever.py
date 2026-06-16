@@ -2,7 +2,7 @@ from pathlib import Path
 import numpy as np
 import faiss
 from sentence_transformers import SentenceTransformer
-from config import lore_data, EMBEDDING_MODEL
+from .config import lore_data, EMBEDDING_MODEL
 
   
 class FAISSRetriever:

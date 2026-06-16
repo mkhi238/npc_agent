@@ -1,9 +1,9 @@
 import gradio as gr
-from retriever import FAISSRetriever
-from constraints import ConstraintChecker
-from agent import NPCAgent, check_duplicates, candidate_generator
-from character import NPCNode
-from config import lore_data, INDEX_PATH, MAX_ATTEMPTS, CLUE_THRESHOLD, MAX_MESSAGES_BEFORE_CLUE, configure_lm, build_lm, MODEL_REGISTRY, DEFAULT_MODEL
+from src.retriever import FAISSRetriever
+from src.constraints import ConstraintChecker
+from src.agent import NPCAgent, check_duplicates, candidate_generator
+from src.character import NPCNode
+from src.config import lore_data, INDEX_PATH, MAX_ATTEMPTS, CLUE_THRESHOLD, MAX_MESSAGES_BEFORE_CLUE, configure_lm, build_lm, MODEL_REGISTRY, DEFAULT_MODEL
 from tts import synthesize
 import os
 import dspy

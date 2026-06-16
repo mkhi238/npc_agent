@@ -6,8 +6,10 @@ from groq import Groq
 load_dotenv()
 api_key = os.getenv("GROQ_API_KEY")
 nvidia_api_key = os.getenv("NVIDIA_API_KEY")
+cohere_api_key = os.getenv("COHERE_API_KEY")
+mistral_api_key = os.getenv("MISTRAL_API_KEY")
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 INDEX_PATH = BASE_DIR
 LORE_PATH  = os.path.join(BASE_DIR, 'lore.json')
 DB_PATH    = os.path.join(BASE_DIR, 'game.db')
@@ -39,6 +41,16 @@ MODEL_REGISTRY = {
         "api_key": nvidia_api_key,
         "api_base": "https://integrate.api.nvidia.com/v1",
     },
+    "Cohere Command R": {
+    "model": "cohere/command-r",
+    "api_key": cohere_api_key,
+    "api_base": None,
+    },
+    "Mistral 7B": {
+    "model": "mistral/open-mistral-7b",
+    "api_key": mistral_api_key,
+    "api_base": None,
+}
 }
 
 DEFAULT_MODEL = "Groq Llama 3.1 8B"

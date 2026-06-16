@@ -1,8 +1,15 @@
-from retriever import FAISSRetriever
-from constraints import ConstraintChecker
-from agent import NPCAgent, check_duplicates, candidate_generator
-from character import NPCNode
-from config import lore_data, INDEX_PATH, MAX_ATTEMPTS, CLUE_THRESHOLD, MAX_MESSAGES_BEFORE_CLUE, configure_lm
+from src.retriever import FAISSRetriever
+from src.constraints import ConstraintChecker
+from src.agent import NPCAgent, check_duplicates, candidate_generator
+from src.character import NPCNode
+from src.config import lore_data, INDEX_PATH, MAX_ATTEMPTS, CLUE_THRESHOLD, MAX_MESSAGES_BEFORE_CLUE, configure_lm, build_lm, MODEL_REGISTRY, DEFAULT_MODEL
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--model", default="Groq Llama 3.1 8B", 
+                    choices=list(MODEL_REGISTRY.keys()))
+args = parser.parse_args()
+configure_lm(args.model)
 
 configure_lm()
 agent = NPCAgent()

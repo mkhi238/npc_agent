@@ -1,4 +1,4 @@
-from config import TTS_MODEL, CHAR_LIMIT, configure_tts
+from src.config import TTS_MODEL, CHAR_LIMIT, configure_tts
 import re
 import wave
 import tempfile

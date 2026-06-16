@@ -1,5 +1,5 @@
-from config import lore_data
-from memory import create_npc_table, store_message, get_recent_history, get_message_count, clear_table
+from .config import lore_data
+from .memory import create_npc_table, store_message, get_recent_history, get_message_count, clear_table
 
 class NPCNode:
     def __init__(self, clue, char_data, prerequisites=None):
