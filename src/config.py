@@ -8,6 +8,7 @@ api_key = os.getenv("GROQ_API_KEY")
 nvidia_api_key = os.getenv("NVIDIA_API_KEY")
 cohere_api_key = os.getenv("COHERE_API_KEY")
 mistral_api_key = os.getenv("MISTRAL_API_KEY")
+openai_api_key = os.getenv("OPENAI_API_KEY")
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 INDEX_PATH = BASE_DIR
@@ -20,7 +21,7 @@ with open(LORE_PATH, 'r') as f:
 
 EMBEDDING_MODEL = "BAAI/bge-small-en-v1.5"
 MODEL_NAME = 'groq/llama-3.1-8b-instant'
-MAX_ATTEMPTS = 2
+MAX_ATTEMPTS = 1
 CLUE_THRESHOLD = 0.5
 MAX_MESSAGES_BEFORE_CLUE = 15
 
@@ -41,8 +42,8 @@ MODEL_REGISTRY = {
         "api_key": nvidia_api_key,
         "api_base": "https://integrate.api.nvidia.com/v1",
     },
-    "Cohere Command R": {
-    "model": "cohere/command-r",
+    "Cohere Command R7B": {
+    "model": "cohere/command-r7b-12-2024",
     "api_key": cohere_api_key,
     "api_base": None,
     },

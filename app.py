@@ -10,6 +10,7 @@ import dspy
 
 configure_lm()
 ACTIVE_LM = build_lm(DEFAULT_MODEL)
+
 agent = NPCAgent()
 retriever = FAISSRetriever(index_dir=INDEX_PATH)
 checker = ConstraintChecker(lore_data)

@@ -32,7 +32,7 @@ class NPCNode:
     def clear_memory(self):
         return clear_table(self.db_table)
     
-    @classmethod
+    @classmethod #pulls out info for json, makes char Node from pulled information
     def from_lore(cls, lore_data, npc_name):
       char_data = {}
       clue = ""
